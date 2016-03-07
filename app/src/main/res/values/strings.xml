@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">ImageDrawProject</string>
+    <string name="title_activity_new_mask">newMaskActivity</string>
+    <string name="title_activity_add_tags">AddTagsActivity</string>
+</resources>
