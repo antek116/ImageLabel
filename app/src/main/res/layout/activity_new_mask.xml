@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".NewMaskActivity">
+
+    >
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="block"
+        android:id="@+id/maskBlockButton"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:onClick="onMaskBlockButtonClicked" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Draw"
+        android:id="@+id/maskDrawButton"
+        android:layout_alignBottom="@+id/maskBlockButton"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:onClick="onMaskDrawButtonClicked" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="DELETE"
+        android:id="@+id/maskDeleteButton"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:onClick="onMaskDeleteButtonClicked" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ADD"
+        android:id="@+id/maskAddButton"
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@+id/maskDrawButton"
+        android:layout_alignEnd="@+id/maskDrawButton"
+        android:nestedScrollingEnabled="false"
+        android:onClick="onMaskAddButtonClicked" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Y"
+        android:id="@+id/maskGrabCutButton"
+        android:layout_alignTop="@+id/maskBlockButton"
+        android:layout_centerHorizontal="true"
+        android:onClick="onMaskGrabCutButtonClicked" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="y"
+        android:id="@+id/maskCorrectButton"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@+id/maskDeleteButton"
+        android:layout_toEndOf="@+id/maskDeleteButton" />
+
+    <kantczak.imagedrawproject.MyImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/maskImageView"
+        android:layout_below="@+id/maskBlockButton"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_above="@+id/maskDeleteButton"
+        android:layout_alignRight="@+id/maskDrawButton"
+        android:layout_alignEnd="@+id/maskDrawButton" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="x"
+        android:id="@+id/maskNotCorrectButton"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@+id/maskCorrectButton"
+        android:layout_toLeftOf="@+id/maskAddButton"
+        android:layout_toStartOf="@+id/maskAddButton" />
+
+</RelativeLayout>

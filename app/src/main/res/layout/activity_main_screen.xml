@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="kantczak.imagedrawproject.MainScreenActivity">
+
+    <kantczak.imagedrawproject.MyImageView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/mainImageView"
+        android:layout_gravity="top"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/blockButton"
+        android:onClick="onMainImageViewClick"
+        android:layout_above="@+id/dropBoxButton" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="block"
+        android:id="@+id/blockButton"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:onClick="onBlockButtonClicked" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="draw"
+        android:id="@+id/drawButton"
+        android:layout_above="@+id/mainImageView"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:onClick="onDrawButtonClicked" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Y"
+        android:id="@+id/yButton"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:onClick="grabCutIntent" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="DROPBOX"
+        android:id="@+id/dropBoxButton"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignRight="@+id/blockButton"
+        android:layout_alignEnd="@+id/blockButton"
+        android:onClick="onDropBoxButtonClicked" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TAGS"
+        android:id="@+id/tagsButton"
+        android:layout_alignParentBottom="true"
+        android:layout_alignLeft="@+id/yButton"
+        android:layout_alignStart="@+id/yButton"
+        android:onClick="onTagsButtonClicked" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="GALLERY"
+        android:id="@+id/galleryButton"
+        android:layout_alignParentBottom="true"
+        android:layout_alignLeft="@+id/drawButton"
+        android:layout_alignStart="@+id/drawButton"
+        android:onClick="onGalleryButtonClicked" />
+
+</RelativeLayout>
