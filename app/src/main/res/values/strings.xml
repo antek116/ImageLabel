@@ -1,5 +1,9 @@
 <resources>
-    <string name="app_name">ImageDrawProject</string>
-    <string name="title_activity_new_mask">newMaskActivity</string>
-    <string name="title_activity_add_tags">AddTagsActivity</string>
+    <string name="app_name">ImageLabelsProject</string>
+    <string name="galleryButtonENG">Gallery</string>
+    <string name="newPhotoButtonENG">New Photo</string>
+    <string name="blockButton">Block</string>
+    <string name="drawButton">Draw</string>
+    <string name="grabcutButton">GrabCut</string>
+    <string name="tags_string">Tags :</string>
 </resources>
