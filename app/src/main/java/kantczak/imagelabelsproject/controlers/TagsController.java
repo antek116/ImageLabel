@@ -19,23 +19,23 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.util.List;
 
-public class AddTagsController {
+public class TagsController {
     private static final String LINE_SEPARATOR = "\r\n";
-    private static AddTagsController instance =null;
+    private static TagsController instance =null;
     private Context context;
     float[] cutValues;
     double color;
     private List<String> tagsList;
 
-    private AddTagsController(Context context, float[] cutValues, List<String> tagsList) {
+    private TagsController(Context context, float[] cutValues, List<String> tagsList) {
         this.context = context;
         this.cutValues = cutValues;
         this.tagsList = tagsList;
         this.tagsList.clear();
     }
-    public static AddTagsController getInstance(Context context,float[] cutValues,List<String> tagsList){
+    public static TagsController getInstance(Context context,float[] cutValues,List<String> tagsList){
         if(instance == null){
-            return instance = new AddTagsController(context,cutValues,tagsList);
+            return instance = new TagsController(context,cutValues,tagsList);
         }else{
             return instance;
         }

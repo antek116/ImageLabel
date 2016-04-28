@@ -251,14 +251,12 @@ public class MyDrawView extends View {
                     final float dy = y - mLastTouchY;
 
                     if (mScaleDetector.isInProgress()) {
-
                         if (Math.abs(mPosX) > ((image.getIntrinsicWidth() * mScaleFactor) - getWidth()))
                             mPosX = -((image.getIntrinsicWidth() * mScaleFactor) - getWidth());
                         if (Math.abs(mPosY) >= getHeight() / 2)
                             mPosY = -((image.getIntrinsicHeight() * mScaleFactor) - getHeight());
                         else if (mPosY < 0)
                             mPosY = 0;
-
                     }
                     // Only move if the ScaleGestureDetector isn't processing a gesture.
                     if (!mScaleDetector.isInProgress()) {
@@ -323,7 +321,6 @@ public class MyDrawView extends View {
         if (isDraw)
             myDraw(ev, mPosX, mPosY);
         return true;
-
     }
 
     private class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {

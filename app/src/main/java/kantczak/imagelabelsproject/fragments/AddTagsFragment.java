@@ -23,7 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import kantczak.imagelabelsproject.R;
-import kantczak.imagelabelsproject.controlers.AddTagsController;
+import kantczak.imagelabelsproject.controlers.TagsController;
 import kantczak.imagelabelsproject.controlers.ImageCutController;
 
 
@@ -48,7 +48,7 @@ public class AddTagsFragment extends Fragment {
     private File tagsFile;
     private String imageName;
     private StableArrayAdapter adapter;
-    private AddTagsController addTagsController;
+    private TagsController tagsController;
     private int imageWidth, imageHeight;
 
     @Override
@@ -105,17 +105,17 @@ public class AddTagsFragment extends Fragment {
     }
 
     private void initialTagsFile() {
-        addTagsController = AddTagsController.getInstance(context, cutValues,tagsList);
-        addTagsController.setCutValues(cutValues);
-        addTagsController.saveImageWithTagToFile(pathToFile,imageName,color,imageUri,imageHeight,imageWidth);
+        tagsController = TagsController.getInstance(context, cutValues, tagsList);
+        tagsController.setCutValues(cutValues);
+        tagsController.saveImageWithTagToFile(pathToFile,imageName,color,imageUri,imageHeight,imageWidth);
         tagsFile = new File(pathToFile + "/" + imageName + "_tags.txt");
         if (!tagsFile.exists()) {
-                addTagsController.writeHeader(tagsFile, Double.toString(color));
+                tagsController.writeHeader(tagsFile, Double.toString(color));
             adapter = new StableArrayAdapter(context,
                     android.R.layout.simple_list_item_1, tagsList);
                 MediaScannerConnection.scanFile(context, new String[]{pathToFile + "/" + imageName + "_Tags.txt"}, null, null);
         } else {
-            addTagsController.readFromFile(tagsFile, true, Double.toString(color));
+            tagsController.readFromFile(tagsFile, true, Double.toString(color));
             adapter = new StableArrayAdapter(context,
                     android.R.layout.simple_list_item_1, tagsList);
         }
@@ -131,7 +131,7 @@ public class AddTagsFragment extends Fragment {
                 else {
                     Tag.setText("");
                     tagsList.add(addedTag);
-                    addTagsController.writeToFile(tagsFile, true, Double.toString(color), addedTag);
+                    tagsController.writeToFile(tagsFile, true, Double.toString(color), addedTag);
                     MediaScannerConnection.scanFile(context, new String[]{pathToFile + "/" + imageName + "_Tags.txt"}, null, null);
                     adapter.addNewTags(tagsList);
                 }

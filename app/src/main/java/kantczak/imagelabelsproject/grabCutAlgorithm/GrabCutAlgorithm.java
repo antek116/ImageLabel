@@ -83,7 +83,7 @@ public class GrabCutAlgorithm extends AsyncTask<Void, Void, Boolean> {
             actualyHeight = img.height();
             img = resizeMat(imageWidth, imageHeight, img);
             background = getMatFromUri();
-            background.convertTo(background, -1, 0.25, 0);
+            background.convertTo(background, -1, 0, 0);
             background = resizeMat(imageWidth, imageHeight, background);
         } catch (Exception e) {
             e.printStackTrace();

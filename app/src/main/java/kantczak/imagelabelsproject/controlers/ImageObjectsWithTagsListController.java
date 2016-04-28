@@ -13,7 +13,7 @@ import kantczak.imagelabelsproject.Model.ImageWithTag;
 
 public class ImageObjectsWithTagsListController {
     ImageCutController imageCutController;
-    AddTagsController addTagsController;
+    TagsController tagsController;
     List<ImageWithTag> list;
     List<String> tagsList = new ArrayList<>();
     Context context;
@@ -25,7 +25,7 @@ public class ImageObjectsWithTagsListController {
         this.imageUri = imageUri;
         imageCutController = ImageCutController.getInstance(context);
         list = imageCutController.getImageWithTagObjectList();
-        addTagsController = AddTagsController.getInstance(context, getFloatCutValues(), tagsList);
+        tagsController = TagsController.getInstance(context, getFloatCutValues(), tagsList);
     }
 
     public static ImageObjectsWithTagsListController getInstance(Context context,Uri imageUri) {
@@ -45,14 +45,14 @@ public class ImageObjectsWithTagsListController {
     public List<ImageWithTag> getImageWithTagList() {
         File tagsFile = new File(Environment.getExternalStorageDirectory() + "/Picture&Labels/" + getImageName() + "_tags.txt");
         for (ImageWithTag imageWithTag : list) {
-            addTagsController.readFromFile(tagsFile, true, Double.toString(imageWithTag.getColor()));
+            tagsController.readFromFile(tagsFile, true, Double.toString(imageWithTag.getColor()));
             imageWithTag.setTags(setTagsAsString());
         }
         return list;
     }
 
     private String setTagsAsString() {
-        tagsList = addTagsController.getTagsList();
+        tagsList = tagsController.getTagsList();
         String tagsInOneString = "";
         for (String tag : tagsList) {
             tagsInOneString += "#" + tag + " ";

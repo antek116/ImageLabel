@@ -66,12 +66,5 @@ public class TagListAdapter extends RecyclerView.Adapter<TagListAdapter.MyViewHo
             mTagsTextView = (TextView) itemView.findViewById(R.id.descriptionTextView);
         }
     }
-
-    private int[] calulateImageSize(int position){
-        int[] imageSize = new int[2];
-        imageSize[0] = imageWithTagsList.get(position).getCutValues()[2] - imageWithTagsList.get(position).getCutValues()[0];
-        imageSize[1] = imageWithTagsList.get(position).getCutValues()[3] - imageWithTagsList.get(position).getCutValues()[1];
-        return imageSize;
-    }
 }
 
