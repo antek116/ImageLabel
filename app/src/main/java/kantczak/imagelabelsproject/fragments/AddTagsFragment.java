@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -55,12 +56,17 @@ public class AddTagsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        view = inflater.inflate(R.layout.add_tags_layout, container, false);
+        view = inflater.inflate(R.layout.add_tags_layout, container, false);;
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         initialView();
         tagsList = new ArrayList<>();
         onButtonClickConfiguration();
         initialTagsFile();
-        return view;
     }
 
     private Drawable loadDrawableFromUri(){
@@ -143,7 +149,7 @@ public class AddTagsFragment extends Fragment {
                 android.support.v4.app.FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 DrawFragment drawFragment = (DrawFragment)fragmentManager.findFragmentByTag(DrawFragment.DRAW_FRAGMENT_ID);
                 ImageCutController.getInstance(getContext()).loadImagesWithTagsFromFile(imageUri.toString(), imageName);
-                getFragmentManager().beginTransaction().replace(R.id.fragment_container, drawFragment).commit();
+                getFragmentManager().beginTransaction().replace(R.id.fragment_container, drawFragment).addToBackStack("APP").commit();
             }
         });
     }

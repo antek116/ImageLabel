@@ -168,7 +168,7 @@ public class TagsController {
         } catch (IOException e) {
             writeHeader(imageWithTagFile, Double.toString(color));
         }
-        MediaScannerConnection.scanFile(context, new String[]{pathToFile + "/" + imageName +"Details.txt"}, null, null);
+        MediaScannerConnection.scanFile(context, new String[]{pathToFile + "/" + imageName +"_Details.txt"}, null, null);
     }
 }
 

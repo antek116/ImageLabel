@@ -60,7 +60,7 @@
             <ImageButton
                 android:id="@+id/drawButton"
                 style="?android:attr/buttonStyleSmall"
-                android:background="@drawable/pencil_icon"
+                android:background="@drawable/start_pencil_icon"
                 android:text="DROPBOX"
                 android:layout_gravity="center"
                 android:layout_width="50dp"

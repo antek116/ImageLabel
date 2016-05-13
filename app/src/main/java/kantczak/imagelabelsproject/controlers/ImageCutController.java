@@ -6,11 +6,18 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.LruCache;
+
+import org.opencv.android.Utils;
+import org.opencv.core.Mat;
+import org.opencv.core.Size;
+import org.opencv.imgcodecs.Imgcodecs;
+import org.opencv.imgproc.Imgproc;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -74,9 +81,14 @@ public class ImageCutController {
 
     private Bitmap addImageToLruCache(Uri imageUri, int imageWidth, int imageHeight) {
         Bitmap bitmap;
+        String imageName = getImageName(imageUri);
+        Mat bitmap_mask = Imgcodecs.imread(Environment.getExternalStorageDirectory() + "/Picture&Labels/" + imageName + "_mask" + ".png");
+        Size matSize = new Size(imageWidth,imageHeight);
+        Imgproc.resize(bitmap_mask,bitmap_mask,matSize);
         try {
             bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), imageUri);
             bitmap = resizeBitmapToSpecificSize(bitmap, imageWidth, imageHeight);
+            bitmap = multipleMaskAndBitmap(bitmap, bitmap_mask);
         } catch (IOException e) {
             bitmap = null;
         }
@@ -85,6 +97,23 @@ public class ImageCutController {
             mLruCache.put(imageUri.toString() + cutValues[0], bitmap);
         }
         return bitmap;
+    }
+
+    private Bitmap multipleMaskAndBitmap(Bitmap bitmap, Mat bitmap_mask) {
+        Mat imgMAT = new Mat();
+        Utils.bitmapToMat(bitmap, imgMAT);
+        Imgproc.cvtColor(imgMAT,imgMAT,Imgproc.COLOR_BGRA2BGR);
+        Mat bitmapAndMask = bitmap_mask.mul(imgMAT);
+        Utils.matToBitmap(bitmapAndMask,bitmap);
+        imgMAT.release();
+        bitmapAndMask.release();
+        return bitmap;
+    }
+
+    private String getImageName(Uri imageUri) {
+        String pathToImage = imageUri.toString();
+        String[] imagePath = pathToImage.split("/");
+        return imagePath[imagePath.length - 1];
     }
 
     private Bitmap resizeBitmapToSpecificSize(Bitmap bitmap, int imageWidth, int imageHeight) {
@@ -119,6 +148,7 @@ public class ImageCutController {
         int i=0;
         imageWithTagArrayList.clear();
         imageWithTagFile = new File(Environment.getExternalStorageDirectory() + "/Picture&Labels/" + imageName +"_Details.txt");
+        MediaScannerConnection.scanFile(context, new String[]{Environment.getExternalStorageDirectory() + "/Picture&Labels/" + imageName +"_Details.txt"}, null, null);
         int[] cutValues = new int[0];
         try (BufferedReader reader = new BufferedReader(new FileReader(imageWithTagFile))) {
             String line;

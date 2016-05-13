@@ -93,10 +93,12 @@ public class DrawFragment extends Fragment {
             public void onClick(View v) {
                 values = myDrawView.cutValues();
                 if (!startDraw) {
+                    drawButton.setBackgroundResource(R.drawable.stop_pencil_icon);
                     myDrawView.blockPicture(true);
                     startDraw = true;
                     myDrawView.startDraw(true);
                 } else {
+                    drawButton.setBackgroundResource(R.drawable.start_pencil_icon);
                     startDraw = false;
                     myDrawView.startDraw(false);
                     myDrawView.blockPicture(false);
@@ -110,8 +112,12 @@ public class DrawFragment extends Fragment {
         grabCutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new GrabCutAlgorithm(getContext(), values, getImageName(), imageUri
-                        , myDrawView.getImageWidth(), myDrawView.getImageHeight(), getActivity()).execute();
+                if(values != null) {
+                    new GrabCutAlgorithm(getContext(), values, getImageName(), imageUri
+                            , myDrawView.getImageWidth(), myDrawView.getImageHeight(), getActivity()).execute();
+                }else{
+                    Toast.makeText(getContext(),"First mark any object",Toast.LENGTH_SHORT).show();
+                }
             }
 
 
@@ -159,13 +165,16 @@ public class DrawFragment extends Fragment {
         });
     }
     private Drawable loadImageFromUri() {
+
         Drawable drawable = null;
         try {
             if (imageUri != null) {
                 drawable = Drawable.createFromStream(view.getContext().getContentResolver().openInputStream(imageUri), imageUri.toString());
             }
         } catch (IOException e) {
+            e.printStackTrace();
             Toast.makeText(getContext(), "Somethig goes wrong... Try again", Toast.LENGTH_SHORT).show();
+
         }
         return drawable;
     }

@@ -1,11 +1,9 @@
 package kantczak.imagelabelsproject.fragments;
 
 import android.app.Activity;
-import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -16,16 +14,12 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import java.io.File;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 
 import kantczak.imagelabelsproject.R;
 import kantczak.imagelabelsproject.controlers.ImageCutController;
 
 public class FirstScreenFragment extends Fragment implements View.OnClickListener {
-
+    static final int REQUEST_IMAGE_CAPTURE = 1;
     private int PICK_IMAGE_REQUEST = 1;
     ImageButton galleryButton, newPhoto;
     private int RESULT_OK = -1;
@@ -123,21 +117,9 @@ public class FirstScreenFragment extends Fragment implements View.OnClickListene
     }
 
     public void onNewPhotoButtonClick(View v) {
-        Intent intent = new Intent();
-        intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
-        Date date = new Date();
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd-kk-mm-ss", Locale.ENGLISH);
-        String newPicFile = df.format(date) + ".jpg";
-        outPath = new File(Environment.getExternalStorageDirectory() + "/Pictures/Pictures&Labels", newPicFile).getPath();
-        File outFile = new File(outPath);
-        mCameraFileName = outFile.toString();
-        Uri outuri = Uri.fromFile(outFile);
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, outuri);
-        Log.i(TAG, "Importing New Picture: " + mCameraFileName);
-        try {
-            startActivityForResult(intent, NEW_PICTURE);
-        } catch (ActivityNotFoundException e) {
-            Toast.makeText(getContext(), "There's no camera", Toast.LENGTH_SHORT).show();
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getContext().getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
         }
     }
     public void onGalleryButtonClick(View v) {

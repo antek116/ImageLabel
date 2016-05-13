@@ -79,6 +79,7 @@ public class GrabCutAlgorithm extends AsyncTask<Void, Void, Boolean> {
 
         try {
             img = getMatFromUri();
+
             actualyWidth = img.width();
             actualyHeight = img.height();
             img = resizeMat(imageWidth, imageHeight, img);
@@ -91,7 +92,7 @@ public class GrabCutAlgorithm extends AsyncTask<Void, Void, Boolean> {
         backgroundSubtracting(img, background, null);
         dst = resizeMat(actualyWidth, actualyHeight, dst);
         Imgcodecs.imwrite(getPathToFile(""), dst);
-        MediaScannerConnection.scanFile(context, new String[]{getPathToFile((calculatedColor.toString()))}, null, null);
+        MediaScannerConnection.scanFile(context, new String[]{getPathToFile("")}, null, null);
         pd.dismiss();
         return true;
     }
@@ -115,7 +116,7 @@ public class GrabCutAlgorithm extends AsyncTask<Void, Void, Boolean> {
         bundle.putInt(AddTagsFragment.IMAGE_HEIGTH, imageHeight);
         addTagsFragment.setArguments(bundle);
         activity.getSupportFragmentManager().beginTransaction().
-                replace(R.id.fragment_container, addTagsFragment).commit();
+                replace(R.id.fragment_container, addTagsFragment).addToBackStack("APP").commit();
     }
 
     public Mat resizeMat(int w, int h, Mat mat) {
@@ -163,6 +164,7 @@ public class GrabCutAlgorithm extends AsyncTask<Void, Void, Boolean> {
         Core.compare(firstMask, source/* GC_PR_FGD */, firstMask, Core.CMP_EQ);
         firstMask = resizeMat(actualyWidth, actualyHeight, firstMask);
         firstMask = resizeMat(imageWidth, imageHeight, firstMask);
+
         Mat foreground = new Mat(img.size(), CvType.CV_8UC3, new Scalar(255,
                 255, 255));
         img.copyTo(foreground, firstMask);
@@ -183,15 +185,15 @@ public class GrabCutAlgorithm extends AsyncTask<Void, Void, Boolean> {
 
         background.setTo(vals, mask);
         cvtColor(background, background, Imgproc.COLOR_RGBA2RGB);
+
         cvtColor(foreground, foreground, Imgproc.COLOR_RGBA2RGB);
+
         cvtColor(dst, dst, Imgproc.COLOR_RGBA2RGB);
+
         Core.add(background, foreground, dst, mask);
         vals.release();
         mask = resizeMat(actualyWidth, actualyHeight, mask);
-        Imgcodecs.imwrite(getPathToFile("mask"), mask);
-        MediaScannerConnection.scanFile(context, new String[]{getPathToFile("mask")}, null, null);
         if (calculatedColor == 1.0) {
-
             Imgcodecs.imwrite(getPathToFile("_mask"), mask);
             MediaScannerConnection.scanFile(context, new String[]{getPathToFile("mask")}, null, null);
 
@@ -201,11 +203,15 @@ public class GrabCutAlgorithm extends AsyncTask<Void, Void, Boolean> {
             Core.add(existMask, mask, existMask);
             Imgcodecs.imwrite(getPathToFile("_mask"), existMask);
             MediaScannerConnection.scanFile(context, new String[]{getPathToFile("_mask")}, null, null);
+            existMask.release();
         }
         firstMask.release();
         source.release();
         bgModel.release();
         fgModel.release();
+        mask.release();
+
+        dst.release();
     }
 
     public boolean isFolderExist() {
@@ -238,9 +244,10 @@ public class GrabCutAlgorithm extends AsyncTask<Void, Void, Boolean> {
 
     private Mat getMatFromUri() throws Exception {
         Bitmap bitmapFromGallery = MediaStore.Images.Media.getBitmap(context.getContentResolver(), bitmapUri);
-        Bitmap myBitmap32 = bitmapFromGallery.copy(Bitmap.Config.ARGB_8888, true);
+//        Bitmap myBitmap32 = bitmapFromGallery.copy(Bitmap.Config.ARGB_8888, true);
         Mat mat = new Mat();
-        Utils.bitmapToMat(myBitmap32, mat);
+        Utils.bitmapToMat(bitmapFromGallery, mat);
+        Imgproc.cvtColor(mat,mat,Imgproc.COLOR_BGR2RGB);
         return mat;
     }
 
