@@ -147,16 +147,16 @@ public class AddTagsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 android.support.v4.app.FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                DrawFragment drawFragment = (DrawFragment)fragmentManager.findFragmentByTag(DrawFragment.DRAW_FRAGMENT_ID);
+                DrawFragment drawFragment = (DrawFragment) fragmentManager.findFragmentByTag(DrawFragment.DRAW_FRAGMENT_ID);
                 ImageCutController.getInstance(getContext()).loadImagesWithTagsFromFile(imageUri.toString(), imageName);
-                getFragmentManager().beginTransaction().replace(R.id.fragment_container, drawFragment).addToBackStack("APP").commit();
+                getFragmentManager().popBackStack();
+                getFragmentManager().beginTransaction().replace(R.id.fragment_container, drawFragment).commit();
+
             }
         });
     }
     public class StableArrayAdapter extends ArrayAdapter<String> {
-
         HashMap<String, Integer> mIdMap = new HashMap<>();
-
         public StableArrayAdapter(Context context, int textViewResourceId,
                                   List<String> objects) {
             super(context, textViewResourceId, objects);
@@ -177,11 +177,9 @@ public class AddTagsFragment extends Fragment {
             String item = getItem(position);
             return mIdMap.get(item);
         }
-
         @Override
         public boolean hasStableIds() {
             return true;
         }
-
     }
 }

@@ -39,7 +39,7 @@ public class MyDrawView extends View {
     private boolean isDraw;
     private boolean isBlock;
 
-    private float cutValues[] = {999999999, 999999999, 0, 0};
+    private float cutValues[] = {Integer.MAX_VALUE, 999999999, 0, 0};
     private float imageWidth;
     private float imageHeight;
     private float scaleMaskImage;

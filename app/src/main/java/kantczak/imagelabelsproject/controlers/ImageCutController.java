@@ -37,6 +37,7 @@ public class ImageCutController {
     private static ImageCutController instance = null;
     private File imageWithTagFile;
     private ArrayList<ImageWithTag> imageWithTagArrayList;
+
     private ImageCutController(Context context) {
         this.context = context;
         // Get max available VM memory, exceeding this amount will throw an
@@ -83,8 +84,11 @@ public class ImageCutController {
         Bitmap bitmap;
         String imageName = getImageName(imageUri);
         Mat bitmap_mask = Imgcodecs.imread(Environment.getExternalStorageDirectory() + "/Picture&Labels/" + imageName + "_mask" + ".png");
-        Size matSize = new Size(imageWidth,imageHeight);
-        Imgproc.resize(bitmap_mask,bitmap_mask,matSize);
+        bitmap_mask = recreateBitmapForMultiplying(bitmap_mask);
+        Size matSize = new Size(imageWidth, imageHeight);
+        Imgproc.resize(bitmap_mask, bitmap_mask, matSize);
+        Imgcodecs.imwrite(Environment.getExternalStorageDirectory() + "/Picture&Labels/" + imageName + "maskWithChangeBitma" + ".png", bitmap_mask);
+        MediaScannerConnection.scanFile(context, new String[]{Environment.getExternalStorageDirectory() + "/Picture&Labels/" + imageName + "maskWithChangeBitma" + ".png"}, null, null);
         try {
             bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), imageUri);
             bitmap = resizeBitmapToSpecificSize(bitmap, imageWidth, imageHeight);
@@ -99,12 +103,29 @@ public class ImageCutController {
         return bitmap;
     }
 
+    private Mat recreateBitmapForMultiplying(Mat bitmapMask) {
+        Size matSize = new Size(100, 100);
+        Imgproc.resize(bitmapMask, bitmapMask, matSize);
+        byte[] value = new byte[]{1,1,1};
+        for (int x = 0; x < bitmapMask.width(); x++) {
+            for (int y = 0; y < bitmapMask.height(); y++) {
+                if (bitmapMask.get(x, y)[0] > 1) {
+//                    bitmapMask.get(x, y)[0] = 1;
+//                    bitmapMask.get(x, y)[1] = 1;
+//                    bitmapMask.get(x, y)[2] = 1;
+                    bitmapMask.put(x,y,value);
+                }
+            }
+        }
+        return bitmapMask;
+    }
+
     private Bitmap multipleMaskAndBitmap(Bitmap bitmap, Mat bitmap_mask) {
         Mat imgMAT = new Mat();
         Utils.bitmapToMat(bitmap, imgMAT);
-        Imgproc.cvtColor(imgMAT,imgMAT,Imgproc.COLOR_BGRA2BGR);
+        Imgproc.cvtColor(imgMAT, imgMAT, Imgproc.COLOR_BGRA2BGR);
         Mat bitmapAndMask = bitmap_mask.mul(imgMAT);
-        Utils.matToBitmap(bitmapAndMask,bitmap);
+        Utils.matToBitmap(bitmapAndMask, bitmap);
         imgMAT.release();
         bitmapAndMask.release();
         return bitmap;
@@ -142,13 +163,13 @@ public class ImageCutController {
     }
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
-    public void loadImagesWithTagsFromFile(String pathToFile,String imageName) {
+    public void loadImagesWithTagsFromFile(String pathToFile, String imageName) {
         Uri imageUri = null;
         double color = 0.0;
-        int i=0;
+        int i = 0;
         imageWithTagArrayList.clear();
-        imageWithTagFile = new File(Environment.getExternalStorageDirectory() + "/Picture&Labels/" + imageName +"_Details.txt");
-        MediaScannerConnection.scanFile(context, new String[]{Environment.getExternalStorageDirectory() + "/Picture&Labels/" + imageName +"_Details.txt"}, null, null);
+        imageWithTagFile = new File(Environment.getExternalStorageDirectory() + "/Picture&Labels/" + imageName + "_Details.txt");
+        MediaScannerConnection.scanFile(context, new String[]{Environment.getExternalStorageDirectory() + "/Picture&Labels/" + imageName + "_Details.txt"}, null, null);
         int[] cutValues = new int[0];
         try (BufferedReader reader = new BufferedReader(new FileReader(imageWithTagFile))) {
             String line;
@@ -160,12 +181,12 @@ public class ImageCutController {
                         i++;
                         continue;
                     }
-                    if(i==1){
+                    if (i == 1) {
                         imageUri = Uri.parse(line);
                         i++;
                         continue;
                     }
-                    if(i==2){
+                    if (i == 2) {
                         cutValues = new int[4];
                         String stringCutValues[] = line.split(" ");
                         cutValues[0] = Integer.parseInt(stringCutValues[0]);
@@ -175,13 +196,13 @@ public class ImageCutController {
                         i++;
                         continue;
                     }
-                    if(i==3){
+                    if (i == 3) {
                         String stringSize[] = line.split(" ");
                         int[] imageSize = new int[2];
                         imageSize[0] = Integer.parseInt(stringSize[0]);
                         imageSize[1] = Integer.parseInt(stringSize[1]);
-                        imageWithTagArrayList.add(new ImageWithTag(imageUri,cutValues,color,imageSize[0],imageSize[1]));
-                        i=0;
+                        imageWithTagArrayList.add(new ImageWithTag(imageUri, cutValues, color, imageSize[0], imageSize[1]));
+                        i = 0;
                     }
                 }
             }
@@ -193,7 +214,8 @@ public class ImageCutController {
         }
 
     }
-    public List<ImageWithTag> getImageWithTagObjectList(){
+
+    public List<ImageWithTag> getImageWithTagObjectList() {
         return this.imageWithTagArrayList;
     }
 }

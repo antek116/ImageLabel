@@ -74,6 +74,7 @@ public class DrawFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        values = new float[]{Integer.MAX_VALUE,0,0,0};
         Drawable drawableFromGallery = loadImageFromUri();
         myDrawView = (MyDrawView) view.findViewById(R.id.mainImageView);
         if (drawableFromGallery != null) {
@@ -105,14 +106,13 @@ public class DrawFragment extends Fragment {
                 }
                 if (values[0] != Integer.MAX_VALUE) {
                     grabCutButton.setClickable(true);
-                    Toast.makeText(getContext(), "U can grabcut now", Toast.LENGTH_SHORT).show();
                 }
             }
         });
         grabCutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(values != null) {
+                if(values[0] != Integer.MAX_VALUE) {
                     new GrabCutAlgorithm(getContext(), values, getImageName(), imageUri
                             , myDrawView.getImageWidth(), myDrawView.getImageHeight(), getActivity()).execute();
                 }else{

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ImageLabelsProject</string>
+    <string name="app_name">Image Labels</string>
     <string name="galleryButtonENG">Gallery</string>
     <string name="newPhotoButtonENG">New Photo</string>
     <string name="blockButton">Block</string>
